@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/categories">Categories</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Product Details</h1>
+        <div id="product-details">
+            <!-- Product details will be rendered here using JavaScript -->
+        </div>
+        <a id="edit-link" href="">Edit</a>
+        <a id="delete-link" href="">Delete</a>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 CRUD Application</p>
+    </footer>
+
+    <script>
+        // Get the product ID from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        // Fetch the product data and render the details
+        fetch(`/products/${productId}`)
+            .then(response => response.json())
+            .then(data => {
+                const productDetails = document.getElementById('product-details');
+                const nameDiv = document.createElement('div');
+                nameDiv.textContent = `Name: ${data.product.name}`;
+                const categoryDiv = document.createElement('div');
+                categoryDiv.textContent = `Category: ${data.product.category_id}`;
+                productDetails.appendChild(nameDiv);
+                productDetails.appendChild(categoryDiv);
+
+                const editLink = document.getElementById('edit-link');
+                editLink.href = `/products/edit?id=${productId}`;
+
+                const deleteLink = document.getElementById('delete-link');
+                deleteLink.href = `/products/delete/${productId}`;
+                deleteLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (confirm('Are you sure you want to delete this product?')) {
+                        fetch(`/products/delete/${productId}`, { method: 'GET' })
+                            .then(() => window.location.href = '/products')
+                            .catch(error => console.error(error));
+                    }
+                });
+            })
+            .catch(error => console.error(error));
+    </script>
+</body>
+
+</html>

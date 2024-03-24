@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/products">Products</a></li>
+        <li><a href="/categories">Categories</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Products</h1>
+    <a href="/products/create.html">Create New Product</a>
+    <ul id="product-list">
+      <!-- Products will be rendered here using JavaScript -->
+    </ul>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 CRUD Application</p>
+  </footer>
+
+  <script>
+    // Fetch products from the server and render them
+    fetch('/products')
+      .then(response => response.json())
+      .then(data => {
+        const productList = document.getElementById('product-list');
+        data.products.forEach(product => {
+          const li = document.createElement('li');
+          li.textContent = `${product.name} (Category: ${product.category_id})`;
+          const viewLink = document.createElement('a');
+          viewLink.href = `/products/${product.id}`;
+          viewLink.textContent = 'View';
+          li.appendChild(viewLink);
+          const editLink = document.createElement('a');
+          editLink.href = `/products/edit/${product.id}`;
+          editLink.textContent = 'Edit';
+          li.appendChild(editLink);
+          const deleteLink = document.createElement('a');
+          deleteLink.href = `/products/delete/${product.id}`;
+          deleteLink.textContent = 'Delete';
+          deleteLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Are you sure you want to delete this product?')) {
+              fetch(`/products/delete/${product.id}`, { method: 'GET' })
+                .then(() => window.location.reload());
+            }
+          });
+          li.appendChild(deleteLink);
+          productList.appendChild(li);
+        });
+      })
+      .catch(error => console.error(error));
+  </script>
+</body>
+
+</html>

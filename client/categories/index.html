@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/categories">Categories</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Categories</h1>
+        <a href="/categories/create.html">Create New Category</a>
+        <ul id="category-list">
+            <!-- Categories will be rendered here using JavaScript -->
+        </ul>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 CRUD Application</p>
+    </footer>
+
+    <script>
+        // Fetch categories from the server and render them
+        fetch('/categories')
+            .then(response => response.json())
+            .then(data => {
+                const categoryList = document.getElementById('category-list');
+                data.categories.forEach(category => {
+                    const li = document.createElement('li');
+                    li.textContent = category.name;
+                    const viewLink = document.createElement('a');
+                    viewLink.href = `/categories/${category.id}`;
+                    viewLink.textContent = 'View';
+                    li.appendChild(viewLink);
+                    const editLink = document.createElement('a');
+                    editLink.href = `/categories/edit/${category.id}`;
+                    editLink.textContent = 'Edit';
+                    li.appendChild(editLink);
+                    const deleteLink = document.createElement('a');
+                    deleteLink.href = `/categories/delete/${category.id}`;
+                    deleteLink.textContent = 'Delete';
+                    deleteLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (confirm('Are you sure you want to delete this category?')) {
+                            fetch(`/categories/delete/${category.id}`, { method: 'GET' })
+                                .then(() => window.location.reload());
+                        }
+                    });
+                    li.appendChild(deleteLink);
+                    categoryList.appendChild(li);
+                });
+            })
+            .catch(error => console.error(error));
+    </script>
+</body>
+
+</html>

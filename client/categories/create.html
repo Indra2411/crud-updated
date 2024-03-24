@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Category</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/products">Products</a></li>
+        <li><a href="/categories">Categories</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Create New Category</h1>
+    <form id="create-category-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+      <br>
+      <button type="submit">Create Category</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 CRUD Application</p>
+  </footer>
+
+  <script>
+    // Handle form submission
+    const createCategoryForm = document.getElementById('create-category-form');
+    createCategoryForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = new FormData(createCategoryForm);
+      const categoryData = Object.fromEntries(formData);
+      fetch('/categories/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(categoryData)
+      })
+        .then(() => window.location.href = '/categories')
+        .catch(error => console.error(error));
+    });
+  </script>
+</body>
+
+</html>
