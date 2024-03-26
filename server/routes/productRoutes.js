@@ -2,8 +2,11 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/productController");
 
+// to get pagination
+router.get("/", productController.index);
+
 // Get all products
-router.get("/", productController.getAllProducts);
+router.get("/getall", productController.getAllProducts);
 
 // Get a single product
 router.get("/:id", productController.getProductById);
@@ -18,6 +21,6 @@ router.put("/update/:id", productController.updateProduct);
 router.delete("/delete/:id", productController.deleteProduct);
 
 // to get all products with category name
-router.get("/allproducts", productController.getAllProductsWithCategories);
+// router.get("/allproducts", productController.getAllProductsWithCategories);
 
 module.exports = router;
