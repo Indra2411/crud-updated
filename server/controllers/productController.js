@@ -68,3 +68,13 @@ exports.deleteProduct = (req, res) => {
     }
   });
 };
+// to get all product with category name
+exports.getAllProductsWithCategories = (req, res) => {
+  connection.query(
+    "SELECT p.id, p.name, c.name AS name FROM products p JOIN categories c ON p.category_id = c.id",
+    (err, res) => {
+      if (err) throw err;
+      res.json({ product: result });
+    }
+  );
+};

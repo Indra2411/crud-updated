@@ -12,9 +12,9 @@ router.get("/:id", categoryController.getCategoryById);
 router.post("/create", categoryController.createCategory);
 
 // Update a category
-router.post("/update/:id", categoryController.updateCategory);
+router.put("/update/:id", categoryController.updateCategory);
 
 // Delete a category
-router.get("/delete/:id", categoryController.deleteCategory);
+router.delete("/delete/:id", categoryController.deleteCategory);
 
 module.exports = router;

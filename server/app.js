@@ -8,7 +8,6 @@ const categoryRoutes = require("./routes/categoryRoutes");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../client")));
-// app.use(express.static("../client"));
 
 // Routes
 app.use("/api/products", productRoutes);

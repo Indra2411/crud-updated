@@ -12,9 +12,12 @@ router.get("/:id", productController.getProductById);
 router.post("/create", productController.createProduct);
 
 // Update a product
-router.post("/update/:id", productController.updateProduct);
+router.put("/update/:id", productController.updateProduct);
 
 // Delete a product
-router.get("/delete/:id", productController.deleteProduct);
+router.delete("/delete/:id", productController.deleteProduct);
+
+// to get all products with category name
+router.get("/allproducts", productController.getAllProductsWithCategories);
 
 module.exports = router;
